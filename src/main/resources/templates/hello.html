@@ -2,9 +2,215 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>欢迎</title>
+    <title>首页</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
 </head>
 <body>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+<form class="layui-form" action="" id="save_dept_form" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="deptName" required  lay-verify="required" placeholder="请输入部门名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排  序</label>
+        <div class="layui-input-inline">
+            <input type="text" name="orderNum" required lay-verify="required" placeholder="请输入序号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="可用|禁用" checked value="0">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--===========================================更新部门信息==============================================================-->
+<form class="layui-form" action="" id="update_dept_form" style="display: none" lay-filter="example">
+    <!--隐藏输入框，保存主键-->
+    <input type="hidden" name="deptId">
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="deptName"  required  lay-verify="required" placeholder="请输入部门名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排  序</label>
+        <div class="layui-input-inline">
+            <input type="text" name="orderNum" required lay-verify="required" placeholder="请输入序号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <!--选中的时候为0，不选中的时候为null-->
+            <input type="checkbox" name="status"  lay-skin="switch" lay-text="可用|禁用" checked value="0" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="updateFormDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<table id="demo" lay-filter="test"></table>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addDept" >添加</button>
+        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="getCheckData">删除</button>
+    </div>
+</script>
+<script>
+    layui.use(['layer', 'form','table','jquery'], function(){
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+        //第一个实例
+        var myTable = table.render({
+            elem: '#demo'
+            ,height: 312
+            ,url: '/dept/selectPage' //数据接口
+            ,page: true //开启分页
+            ,limit:3//默认一页显示5条数据
+            ,limits:[3,5,10,15,20,50,100]//默认一页显示5条数据
+            ,toolbar:'#toolbarDemo'
+            ,cols: [
+                [ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'deptId', title: '部门编号', width:120, sort: true, fixed: 'left'}
+                    ,{field: 'deptName', title: '部门名称', width:120}
+                    ,{field: 'orderNum', title: '排序', width:80, sort: true}
+                    ,{field: 'status', title: '状态', width:80}
+                    ,{field: 'createBy', title: '创建人', width: 80, sort: true}
+                    ,{field: 'createTime', title: '创建时间', width: 160, sort: true}
+                    ,{field: 'updateBy', title: '修改人', width: 80}
+                    ,{field: 'updateTime', title: '修改时间', width: 135, sort: true}
+                    ,{ title: '操作', width: 115,toolbar: '#barDemo'}
+                ]]
+        });
+    //监听头工具栏事件
+    table.on('toolbar(test)', function(obj){
+        var checkStatus = table.checkStatus(obj.config.id)
+            ,data = checkStatus.data; //获取选中的数据
+        switch(obj.event){
+            case 'addDept':
+                layer.open({
+                    title: '添加部门',
+                    type: 1,
+                    content: $('#save_dept_form')
+                });
+                break;
+            case 'update':
+                if(data.length === 0){
+                    layer.msg('请选择一行');
+                } else if(data.length > 1){
+                    layer.msg('只能同时编辑一个');
+                } else {
+                    layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+                }
+                break;
+            case 'getCheckData':
+                if(data.length === 0){
+                    layer.msg('请选择一行');
+                } else {
+                    layer.alert(JSON.stringify(data));
+                    //可以获取到选中的数据，写循环删除
+                }
+                break;
+        };
+    });
 
+    //监听保存部门表单的提交
+    form.on('submit(formDemo)', function(data){
+        //layer.msg(JSON.stringify(data.field));
+        $.ajax({
+            url:'/dept/saveDept',
+            dataType:'json',
+            type:'POST',
+            data:data.field,
+            success:function (result) {
+                layer.closeAll();//关闭对话框
+                layer.msg(result.msg);
+                myTable.reload();//重新加载表格数据
+                $("#save_dept_form")[0].reset();//重置表单
+            }
+        })
+        return false;
+    });
+        //监听修改部门表单的提交
+        form.on('submit(updateFormDemo)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            data.field.status = data.field.status ? 0:1;
+            $.ajax({
+                url:'/dept/updateDept',
+                dataType:'json',
+                type:'POST',
+                data:data.field,
+                success:function (result) {
+                    layer.closeAll();//关闭对话框
+                    layer.msg(result.msg);
+                    myTable.reload();//重新加载表格数据
+                }
+            })
+            return false;
+        });
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+            console.log(data);
+            var layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'delete'){
+                layer.confirm('真的删除行么', function(index){
+                    /*  obj.del(); //删除对应行（tr）的DOM结构
+                      layer.close(index);*/
+                    //向服务端发送删除指令
+                    console.log(data);
+                    $.ajax({
+                        url:'/dept/deleteDept',
+                        dataType:'json',
+                        type:'POST',
+                        data:{deptId:data.deptId},
+                        success:function (result) {
+                            layer.closeAll();//关闭对话框
+                            layer.msg(result.msg);
+                            myTable.reload();//重新加载表格数据
+                        }
+                    })
+                });
+            } else if(layEvent === 'edit'){
+                //将修改前的数据赋值给修改表单
+                form.val('example', {
+                    "deptId":data.deptId,
+                    "deptName": data.deptName // "name": "value"
+                    ,"orderNum":data.orderNum
+                    ,"status": data.status==0?true:false //开关状态
+                });
+
+                layer.open({
+                    title: '编辑部门',
+                    type: 1,
+                    content: $('#update_dept_form'),
+                    area: ['500px', '300px']
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>
