@@ -113,11 +113,13 @@ public class DeptController {
     @ResponseBody
     public Object deleteMoreDept(@RequestBody List<Dept> list){
         Map<String,Object> map = new HashMap<>();
+        //逻辑删除只需要id和逻辑删除的数据，其他数据不需要，所以重新定义一个数组
         List<Dept> deptList = new ArrayList<>();
         try {
             for (Dept dept:list){
                 Dept deptNew = new Dept();
                 deptNew.setDelFlag("1");
+                //取出id放入新的数组中
                 deptNew.setDeptId(dept.getDeptId());
                 deptList.add(deptNew);
             }
