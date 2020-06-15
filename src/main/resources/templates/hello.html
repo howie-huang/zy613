@@ -129,18 +129,20 @@
                 } else {
                     //layer.alert(JSON.stringify(data));
                     //可以获取到选中的数据，写循环删除
-                    $.ajax({
-                        url:'/dept/deleteMoreDept',
-                        dataType:'json',
-                        type:'POST',
-                        contentType:"application/json",
-                        data:JSON.stringify(data),
-                        success:function (result) {
-                            layer.msg(result.msg);
-                            myTable.reload();//重新加载表格数据
-                        }
+                    layer.confirm("真的要删除这几行数据吗?",function () {
+                        $.ajax({
+                            url:'/dept/deleteMoreDept',
+                            dataType:'json',
+                            type:'POST',
+                            contentType:"application/json",
+                            data:JSON.stringify(data),
+                            success:function (result) {
+                                layer.msg(result.msg);
+                                myTable.reload();//重新加载表格数据
+                            }
+                        });
                     });
-                    return false;
+
                 }
                 break;
         };
