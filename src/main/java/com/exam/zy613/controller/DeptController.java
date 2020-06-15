@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -116,20 +113,27 @@ public class DeptController {
     @ResponseBody
     public Object deleteMoreDept(@RequestBody List<Dept> list){
         Map<String,Object> map = new HashMap<>();
+        List<Dept> deptList = new ArrayList<>();
         try {
             for (Dept dept:list){
-                dept.setDelFlag("1");
-                deptService.updateById(dept);
+                Dept deptNew = new Dept();
+                deptNew.setDelFlag("1");
+                deptNew.setDeptId(dept.getDeptId());
+                deptList.add(deptNew);
             }
+            boolean updateMore = deptService.updateBatchById(deptList);
+            if(updateMore){
+                map.put("code",0);
+                map.put("msg","删除成功");
+            }else {
+                map.put("code",1);
+                map.put("msg","删除失败");
+            }
+            return map;
         }catch (Exception e){
             e.printStackTrace();
-            map.put("code",1);
-            map.put("msg","出错了，删除失败");
-            return map;
         }
-        map.put("code",0);
-        map.put("msg","删除成功");
-        return map;
+        return "";
     }
 }
 
