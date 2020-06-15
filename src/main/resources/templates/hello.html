@@ -114,21 +114,33 @@
                     content: $('#save_dept_form')
                 });
                 break;
-            case 'update':
-                if(data.length === 0){
-                    layer.msg('请选择一行');
-                } else if(data.length > 1){
-                    layer.msg('只能同时编辑一个');
-                } else {
-                    layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
-                }
-                break;
+            // case 'update':
+            //     if(data.length === 0){
+            //         layer.msg('请选择一行');
+            //     } else if(data.length > 1){
+            //         layer.msg('只能同时编辑一个');
+            //     } else {
+            //         layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+            //     }
+            //     break;
             case 'getCheckData':
                 if(data.length === 0){
                     layer.msg('请选择一行');
                 } else {
-                    layer.alert(JSON.stringify(data));
+                    //layer.alert(JSON.stringify(data));
                     //可以获取到选中的数据，写循环删除
+                    $.ajax({
+                        url:'/dept/deleteMoreDept',
+                        dataType:'json',
+                        type:'POST',
+                        contentType:"application/json",
+                        data:JSON.stringify(data),
+                        success:function (result) {
+                            layer.msg(result.msg);
+                            myTable.reload();//重新加载表格数据
+                        }
+                    });
+                    return false;
                 }
                 break;
         };

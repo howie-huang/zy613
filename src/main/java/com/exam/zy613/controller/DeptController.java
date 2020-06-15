@@ -9,7 +9,9 @@ import com.exam.zy613.service.DeptService;
 import com.exam.zy613.util.LayUIData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -108,6 +110,25 @@ public class DeptController {
             map.put("code",1);
             map.put("msg","删除失败");
         }
+        return map;
+    }
+    @RequestMapping("/deleteMoreDept")
+    @ResponseBody
+    public Object deleteMoreDept(@RequestBody List<Dept> list){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            for (Dept dept:list){
+                dept.setDelFlag("1");
+                deptService.updateById(dept);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("code",1);
+            map.put("msg","出错了，删除失败");
+            return map;
+        }
+        map.put("code",0);
+        map.put("msg","删除成功");
         return map;
     }
 }
