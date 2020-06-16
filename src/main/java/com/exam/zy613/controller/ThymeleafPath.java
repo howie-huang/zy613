@@ -1,5 +1,7 @@
 package com.exam.zy613.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,6 +17,12 @@ public class ThymeleafPath {
     }
     @RequestMapping("/login")
     public String toLogin(){
+        return "login";
+    }
+    @RequestMapping("/loginOut")
+    public String toOut(){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return "login";
     }
 }
