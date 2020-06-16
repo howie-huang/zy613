@@ -1,5 +1,7 @@
 package com.exam.zy613.util;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,11 +53,10 @@ public class BaseUtil {
      * @param salt
      * @return string
      */
-    /*
     public static String tranWord(String password, String salt){
         return new Md5Hash(password,salt,2).toString();
     }
-*/
+
     /**
      * 判断是否操作成功
      * @param i

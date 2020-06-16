@@ -13,4 +13,8 @@ public class ThymeleafPath {
     public String toHello(){
         return "hello";
     }
+    @RequestMapping("/login")
+    public String toLogin(){
+        return "login";
+    }
 }

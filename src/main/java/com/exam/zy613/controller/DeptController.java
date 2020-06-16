@@ -31,9 +31,19 @@ public class DeptController {
     private DeptService deptService;
     @ResponseBody
     @RequestMapping("/selectPage")
-    public LayUIData selectPage(Integer page,Integer limit){
+    public LayUIData selectPage(Integer page,Integer limit,String searchDeptName,String searchCreateUser,String searchUpdateUser){
         Page<Dept> pages = new Page<>(page,limit);
         Wrapper<Dept> wrapper = new EntityWrapper<>();
+        //添加模糊查询的条件
+        if(null!=searchDeptName&&!"".equals(searchDeptName)){
+            wrapper.like("dept_name",searchDeptName);
+        }
+        if(null!=searchCreateUser&&!"".equals(searchCreateUser)){
+            wrapper.like("create_by",searchCreateUser);
+        }
+        if(null!=searchUpdateUser&&!"".equals(searchUpdateUser)){
+            wrapper.like("update_by",searchUpdateUser);
+        }
         wrapper.eq("del_flag",0);
         int pageNum = deptService.selectCount(wrapper);
         Page<Dept> deptPage = deptService.selectPage(pages,wrapper);
