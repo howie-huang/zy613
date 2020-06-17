@@ -97,8 +97,6 @@
                 <button type="reset" class="layui-btn layui-btn-primary" onclick="reload()">重置</button>
             </div>
         </form>
-        <span th:text="${loginUser}"></span>
-        <button type="button" class="layui-btn" onclick="loginOut()">退出</button>
     </div>
     <div class="layui-card">
         <table id="demo" lay-filter="test"></table>
@@ -287,9 +285,6 @@
     });
     function reload() {
         window.location.reload();
-    };
-    function loginOut() {
-        window.location.href="/loginOut";
     }
 </script>
 </body>

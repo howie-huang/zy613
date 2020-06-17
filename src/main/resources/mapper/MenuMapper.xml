@@ -24,5 +24,14 @@
     <sql id="Base_Column_List">
         menu_id AS menuId, menu_name AS menuName, parent_id AS parentId, order_num AS orderNum, url, menu_type AS menuType, visible, perms, icon, create_by AS createBy, create_time AS createTime, update_by AS updateBy, update_time AS updateTime, remark
     </sql>
-
+    <select id="selectMenuByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT a.* from tbl_menu a
+	    where menu_id in (
+		    select b.menu_id from tbl_role_menu b
+		    where b.role_id in (
+			    select c.role_id from tbl_user_role c
+			    where c.user_id = (
+				    select d.user_id from tbl_user d
+				    where d.login_name = #{username})))
+    </select>
 </mapper>

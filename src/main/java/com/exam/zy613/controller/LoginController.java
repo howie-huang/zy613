@@ -3,16 +3,19 @@ package com.exam.zy613.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.exam.zy613.entity.User;
+import com.exam.zy613.service.MenuService;
 import com.exam.zy613.service.UserService;
 import com.exam.zy613.util.BaseUtil;
+import com.exam.zy613.util.LayUiTree;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * 登陆
@@ -22,13 +25,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
-    private UserService service;
+    private UserService userService;
+    @Autowired
+    private MenuService menuService;
     @RequestMapping("/login")
-    public String login(@RequestBody User user, Model model) {
-        System.out.println(user);
+    public String login(String username,String password, Model model) {
+        System.out.println(username+"===="+password);
         Subject subject = SecurityUtils.getSubject();
         try {
-            UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getPassword());
+            UsernamePasswordToken token = new UsernamePasswordToken(username,password);
             subject.login(token);
         } catch (UnknownAccountException uae) {
             model.addAttribute("message","用户名不存在");
@@ -47,10 +52,12 @@ public class LoginController {
             return "login";
         }
         Wrapper<User> wrapper = new EntityWrapper<>();
-        wrapper.eq("login_name", user.getLoginName());
-        User returnUser = service.selectOne(wrapper);
+        wrapper.eq("login_name", username);
+        User returnUser = userService.selectOne(wrapper);
         model.addAttribute("loginUser",returnUser.getUserName());
-        return "hello";
+        List<LayUiTree> menus = menuService.selectMenuByName(username);
+        model.addAttribute("menus",menus);
+        return "index";
     }
 
 //    public static void main(String[] args) {

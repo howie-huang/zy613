@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class ThymeleafPath {
-    @RequestMapping("/hello")
+    @RequestMapping("/dept/toShowDept")
     public String toHello(){
-        return "hello";
+        return "dept/showDept";
     }
     @RequestMapping("/login")
     public String toLogin(){
