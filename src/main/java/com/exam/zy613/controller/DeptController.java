@@ -29,6 +29,19 @@ import java.util.*;
 public class DeptController {
     @Autowired
     private DeptService deptService;
+    /**
+     * create by: howie
+     * description: 查询部门
+     * create time: 2020/6/18 13:37
+     * 可以进行条件或分页查询
+     * @param page
+     * @param limit
+     * @param searchDeptName
+     * @param searchCreateUser
+     * @param searchUpdateUser
+     * @return layUiData
+     */
+
     @ResponseBody
     @RequestMapping("/selectPage")
     public LayUIData selectPage(Integer page,Integer limit,String searchDeptName,String searchCreateUser,String searchUpdateUser){
