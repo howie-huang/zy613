@@ -17,12 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.*;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author howie-huang
- * @since 2020-06-13
+ * @Author howie
+ * @Description  部门的操作
+ * @Date 2020/6/20 13:48
  */
 @Controller
 @RequestMapping("/dept")
@@ -69,7 +66,9 @@ public class DeptController {
         return layUIData;
     }
     /**
-     * 保存部门
+     * @Author howie
+     * @Description  保存部门
+     * @Date 2020/6/20 13:49
      * @param dept
      * @return
      */
@@ -90,10 +89,11 @@ public class DeptController {
         return map;
     }
     /**
-     * 更新部门信息（controller中的方法作用1：页面跳转，2：收受参数，返回参数
-     * 不建议在controller中加入过多的业务逻辑）
+     * @Author howie
+     * @Description  修改数据，接受参数，更新数据
+     * @Date 2020/6/20 13:50
      * @param dept
-     * @return
+     * @return object
      */
     @RequestMapping("/updateDept")
     @ResponseBody
@@ -101,10 +101,6 @@ public class DeptController {
         Map<String ,Object > map = new HashMap<>();
         dept.setUpdateBy("root");
         dept.setUpdateTime(new Date());
-        //此处待优化
-        //if(null==dept.getStatus()){
-            //dept.setStatus("1");
-        //}
 
         boolean update = deptService.updateById(dept);
         if(update){
@@ -116,6 +112,13 @@ public class DeptController {
         }
         return map;
     }
+    /**
+     * @Author howie
+     * @Description  逻辑删除部门
+     * @Date 2020/6/20 13:51
+     * @param dept
+     * @return object
+     */
     @RequestMapping("/deleteDept")
     @ResponseBody
     public Object deleteDept(Dept dept){
@@ -132,6 +135,13 @@ public class DeptController {
         }
         return map;
     }
+    /**
+     * @Author howie
+     * @Description  批量删除
+     * @Date 2020/6/20 13:52
+     * @param list
+     * @return object
+     */
     @RequestMapping("/deleteMoreDept")
     @ResponseBody
     public Object deleteMoreDept(@RequestBody List<Dept> list){

@@ -15,6 +15,10 @@ public class ThymeleafPath {
     public String toHello(){
         return "dept/showDept";
     }
+    @RequestMapping("/role/toShowRole")
+    public String toUser(){
+        return "role/showRole";
+    }
     @RequestMapping("/login")
     public String toLogin(){
         return "login";

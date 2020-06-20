@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.exam.zy613.entity.User;
 import com.exam.zy613.service.MenuService;
 import com.exam.zy613.service.UserService;
-import com.exam.zy613.util.BaseUtil;
 import com.exam.zy613.util.LayUiTree;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -18,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 /**
- * 登陆
- * @author 31515
+ * @Author howie
+ * @Description  TODO
+ * @Date 2020/6/20 13:46
  */
 @Controller
 @RequestMapping("/login")
@@ -28,9 +28,17 @@ public class LoginController {
     private UserService userService;
     @Autowired
     private MenuService menuService;
+    /**
+     * @Author howie
+     * @Description  登陆方法
+     * @Date 2020/6/20 13:42
+     * @param username
+     * @param password
+     * @param model
+     * @return string
+     */
     @RequestMapping("/login")
     public String login(String username,String password, Model model) {
-        System.out.println(username+"===="+password);
         Subject subject = SecurityUtils.getSubject();
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username,password);

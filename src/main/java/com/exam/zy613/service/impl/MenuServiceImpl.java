@@ -26,12 +26,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     /**
      * 根据登录名查询权限
      * 实现接口
-     * @param username
+     * @param loginName
      * @return list
      */
     @Override
-    public List<LayUiTree> selectMenuByName(String username) {
-        List<Menu> list = menuMapper.selectMenuByName(username);
+    public List<LayUiTree> selectMenuByName(String loginName) {
+        List<Menu> list = menuMapper.selectMenuByName(loginName);
         return MenuTree.menuTranTree(list);
     }
 }

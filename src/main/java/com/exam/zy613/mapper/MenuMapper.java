@@ -7,19 +7,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author howie-huang
- * @since 2020-06-13
+ * @author howie
+ * @description  菜单dao层接口
+ * @date 2020/6/20 13:54
  */
 @Repository
 public interface MenuMapper extends BaseMapper<Menu> {
     /**
-     * 根据登录名查询权限
-     * @param username
-     * @return list
+     * @author howie
+     * @description  selectMenuByName 根据登陆名查询菜单
+     * @date 2020/6/20 14:11
+     * @param loginName
+     * @return list<Menu>
      */
-    List<Menu> selectMenuByName(String username);
+    List<Menu> selectMenuByName(String loginName);
 }

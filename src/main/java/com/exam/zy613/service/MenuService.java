@@ -7,9 +7,7 @@ import com.exam.zy613.util.LayUiTree;
 import java.util.List;
 
 /**
- * <p>
  *  服务类
- * </p>
  *
  * @author howie-huang
  * @since 2020-06-13
@@ -17,8 +15,8 @@ import java.util.List;
 public interface MenuService extends IService<Menu> {
     /**
      * 根据登录名查询权限
-     * @param username
+     * @param loginName
      * @return list
      */
-    List<LayUiTree> selectMenuByName(String username);
+    List<LayUiTree> selectMenuByName(String loginName);
 }
